@@ -1,4 +1,5 @@
 import { fail, type Actions } from '@sveltejs/kit';
+import { writeFile } from 'fs/promises';
 
 export const actions: Actions = {
   upload: async ({ request }) => {
@@ -17,6 +18,8 @@ export const actions: Actions = {
         error: true,
         message: 'File extension wrong. Accept ' + extensions.join(',')
       });
+
+    await writeFile(`./static/${file.name}`, file.stream());
     return { success: true, error: false };
   }
 };
